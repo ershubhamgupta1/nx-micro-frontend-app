@@ -77,43 +77,55 @@ Useful commands
 
 ================================
 
-Publish shared-common package to GitHub Packages
+Publish shared component package to npm
 
-Package name: @ershubhamgupta1/shared-common
+Package name: @nx-mfe-poc/shared-component
 
-1) Update the version in libs/shared/common/package.json
+1) Make sure you own the npm scope @nx-mfe-poc or have publish access to it
 
-2) Build the shared package
+2) Update the version in libs/shared/common/package.json
+
+3) Build the shared package
 
   npx nx build shared-common
 
-3) Publish locally to GitHub Packages using PAT
+4) Login to npm locally if you want to publish from your machine
 
-  export GH_PACKAGES_TOKEN=<your_github_pat_with_write_packages>
-  printf "@ershubhamgupta1:registry=https://npm.pkg.github.com\n//npm.pkg.github.com/:_authToken=${GH_PACKAGES_TOKEN}\n" > ~/.npmrc
+  npm login
+
+5) Publish locally to npm
+
   cd dist/libs/shared/common
-  npm publish
+  npm publish --access public
 
-4) Push code changes to GitHub
+6) Push code changes to GitHub
 
   git add .
-  git commit -m "chore: prepare shared-common package publish"
+  git commit -m "chore: prepare shared-component package publish"
   git push origin main
 
-5) Publish using GitHub Actions by pushing a tag
+7) Publish using GitHub Actions by pushing a tag
 
-  git tag shared-common-v0.1.0
-  git push origin shared-common-v0.1.0
+  git tag shared-component-v0.1.0
+  git push origin shared-component-v0.1.0
 
-6) Or trigger the workflow manually from GitHub Actions
+8) Or trigger the workflow manually from GitHub Actions
 
-  Workflow name: Publish Shared Common Package
+  Workflow name: Publish Shared Component Package
 
-7) Install the package from GitHub Packages in another project
+9) GitHub Actions requirement
 
-  npm install @ershubhamgupta1/shared-common
+  Add NPM_TOKEN in GitHub repository secrets
 
-8) If installing from another private project, configure npm registry first
+10) Verify the package on npm
 
-  printf "@ershubhamgupta1:registry=https://npm.pkg.github.com\n//npm.pkg.github.com/:_authToken=${GH_PACKAGES_TOKEN}\n" > ~/.npmrc
-  npm install @ershubhamgupta1/shared-common
+  npm view @nx-mfe-poc/shared-component
+
+11) Install the package from npm in another project
+
+  npm install @nx-mfe-poc/shared-component
+
+12) Important
+
+  If npm publish fails, first verify that the scope @nx-mfe-poc exists in npm
+  and that your npm user/token has publish permission for that scope.

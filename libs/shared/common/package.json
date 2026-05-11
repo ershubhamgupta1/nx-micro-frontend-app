@@ -1,5 +1,5 @@
 {
-  "name": "@ershubhamgupta1/shared-common",
+  "name": "@nx-mfe-poc/shared-component",
   "version": "0.1.0",
   "description": "Shared React components for the nx micro frontend workspace",
   "license": "MIT",
@@ -20,7 +20,8 @@
   ],
   "sideEffects": ["**/*.css"],
   "publishConfig": {
-    "registry": "https://npm.pkg.github.com"
+    "access": "public",
+    "registry": "https://registry.npmjs.org"
   },
   "repository": {
     "type": "git",
