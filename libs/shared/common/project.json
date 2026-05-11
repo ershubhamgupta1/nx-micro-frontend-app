@@ -1,0 +1,35 @@
+{
+  "name": "shared-common",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/shared/common/src",
+  "projectType": "library",
+  "tags": ["scope:shared", "type:util"],
+  "targets": {
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/shared/common",
+        "main": "libs/shared/common/src/index.ts",
+        "tsConfig": "libs/shared/common/tsconfig.lib.json",
+        "assets": [
+          {
+            "input": "libs/shared/common",
+            "glob": "src/**/*.module.css",
+            "output": "."
+          },
+          {
+            "input": "libs/shared/common",
+            "glob": "src/global.d.ts",
+            "output": "."
+          },
+          {
+            "input": "libs/shared/common",
+            "glob": "package.json",
+            "output": "."
+          }
+        ]
+      }
+    }
+  }
+}

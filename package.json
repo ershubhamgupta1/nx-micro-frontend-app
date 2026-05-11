@@ -1,5 +1,5 @@
 {
-  "name": "@nx-mfe-poc/source",
+  "name": "@ershubhamgupta/source",
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {},
@@ -49,6 +49,7 @@
     "typescript-eslint": "^8.40.0"
   },
   "dependencies": {
+    "@ershubhamgupta/shared-component": "^0.1.4",
     "@module-federation/enhanced": "^2.1.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",

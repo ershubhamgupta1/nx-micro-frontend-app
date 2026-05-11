@@ -1,17 +1,23 @@
 import * as React from 'react';
+import { Button, PageCard } from '@ershubhamgupta/shared-component';
 import { NavLink, Route, Routes } from 'react-router-dom';
 import styles from './app.module.css';
 
 const DispatchMessages = React.lazy(() => import('dispatch_messages/Module'));
+const brandTitle = 'Micro Frontend Demo';
+const navigationItems = [
+  { label: 'Home', path: '/' },
+  { label: 'Dispatch Messages', path: '/dispatch-messages' },
+];
 
 function HomePage() {
   return (
-    <div className={styles.contentCard}>
-      <h1 className={styles.sectionTitle}>Home</h1>
-      <p className={styles.sectionText}>
-        This is the host application home page.
-      </p>
-    </div>
+    <PageCard
+      title="Home"
+      message="This is the host application home page."
+    >
+      <Button label="Host Button" />
+    </PageCard>
   );
 }
 
@@ -19,36 +25,29 @@ export function App() {
   return (
     <div className={styles.layout}>
       <aside className={styles.sidebar}>
-        <div className={styles.brand}>Micro Frontend Demo</div>
+        <div className={styles.brand}>{brandTitle}</div>
         <nav className={styles.nav}>
-          <NavLink
-            to="/"
-            end
-            className={({ isActive }) =>
-              isActive ? `${styles.link} ${styles.activeLink}` : styles.link
-            }
-          >
-            Home
-          </NavLink>
-          <NavLink
-            to="/dispatch-messages"
-            className={({ isActive }) =>
-              isActive ? `${styles.link} ${styles.activeLink}` : styles.link
-            }
-          >
-            Dispatch Messages
-          </NavLink>
+          {navigationItems.map((item) => (
+            <NavLink
+              key={item.path}
+              to={item.path}
+              end={item.path === '/'}
+              className={({ isActive }) =>
+                isActive ? `${styles.link} ${styles.activeLink}` : styles.link
+              }
+            >
+              {item.label}
+            </NavLink>
+          ))}
         </nav>
       </aside>
       <main className={styles.content}>
         <React.Suspense
           fallback={
-            <div className={styles.contentCard}>
-              <h1 className={styles.sectionTitle}>Loading</h1>
-              <p className={styles.sectionText}>
-                Loading Dispatch Messages...
-              </p>
-            </div>
+            <PageCard
+              title="Loading"
+              message="Loading Dispatch Messages..."
+            />
           }
         >
           <Routes>

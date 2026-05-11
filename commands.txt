@@ -1,0 +1,137 @@
+npx create-nx-workspace@latest nx-mfe-poc \
+  --workspaceType=integrated \
+  --preset=apps \
+  --nxCloud=skip \
+  --interactive=false
+
+
+
+  cd nx-mfe-poc
+
+npm install -D @nx/react @nx/webpack @nx/jest
+
+nx g @nx/react:host \
+  --name=shell \
+  --directory=apps/shell \
+  --bundler=webpack \
+  --style=css \
+  --unitTestRunner=jest \
+  --e2eTestRunner=none
+
+nx g @nx/react:remote \
+  --name=dispatch_messages \
+  --host=shell \
+  --directory=apps/dispatch_messages \
+  --bundler=webpack \
+  --style=css \
+  --unitTestRunner=jest \
+  --e2eTestRunner=none
+  
+nx reset 
+
+nx serve shell (this will automatically load both shell and dispatch_messages)
+
+
+================================
+
+1) Create build for shell and dispatch_messages:  nx build shell 
+  Desc: it will automatically build both shell and dispatch_messages
+
+2) How to validate the build 
+
+  npm install -g serve
+  cd dist/apps/shell
+  serve
+
+3) Now open the url given by serve in your browser and you should see the shell app with dispatch_messages loaded
+Note: see you can see the app.tsx in sources tab, you can see the files are not hashed, only one separate file for the vendors
+
+
+
+
+
+
+
+Things to show in demo
+
+FOR NX Based App (show the nx features how easliy we can create the setup)
+
+1) How we will create the setup App
+2) How to add remote app and host app.  
+3) How to run the app in local server
+4) How to build the app and run it 
+5) Leverage the Devtool to show the diff b/w dev and build 
+  1) app.tsx can be seen in sources tab for dev but not for build
+  2) in network tab we can see the files are getting hashed in build but not on dev
+
+
+
+
+
+Useful commands
+
+1) Create the build with dev config: nx build shell --configuration=development
+
+
+
+
+================================
+
+Publish shared component package to npm
+
+Package name: @ershubhamgupta/shared-component
+
+1) Make sure you own the npm scope @ershubhamgupta or have publish access to it
+
+2) Update the name/version in libs/shared/common/package.json
+
+3) Build the shared package
+
+  npx nx build shared-common
+
+  Important: if you change the package name or version, build again before publish
+  so dist/libs/shared/common/package.json gets updated
+
+4) Login to npm locally if you want to publish from your machine
+
+  npm login
+
+5) Publish locally to npm
+
+  cd dist/libs/shared/common
+  npm publish --access public --otp=<6_digit_code>
+
+6) Push code changes to GitHub
+
+  git add .
+  git commit -m "chore: prepare shared-component package publish"
+  git push origin main
+
+7) Publish using GitHub Actions by pushing a tag
+
+  git tag shared-component-v0.1.0
+  git push origin shared-component-v0.1.0
+
+8) Or trigger the workflow manually from GitHub Actions
+
+  Workflow name: Publish Shared Component Package
+
+9) GitHub Actions requirement
+
+  Add NPM_TOKEN in GitHub repository secrets
+  NPM_TOKEN must be an npm publish token that can bypass 2FA for CI publishing
+
+10) Verify the package on npm
+
+  npm view @ershubhamgupta/shared-component
+
+11) Install the package from npm in another project
+
+  npm install @ershubhamgupta/shared-component
+
+12) Important
+
+  If npm publish fails, first verify that the scope @ershubhamgupta exists in npm
+  and that your npm user/token has publish permission for that scope.
+  If your npm account has 2FA enabled, local publish requires --otp and CI requires
+  an npm token with bypass 2FA permission.
