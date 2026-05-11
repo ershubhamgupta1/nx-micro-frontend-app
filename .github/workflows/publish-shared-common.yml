@@ -1,0 +1,37 @@
+name: Publish Shared Common Package
+
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - 'shared-common-v*'
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          registry-url: 'https://npm.pkg.github.com'
+          scope: '@ershubhamgupta1'
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build shared-common package
+        run: npx nx build shared-common
+
+      - name: Publish package to GitHub Packages
+        run: npm publish
+        working-directory: dist/libs/shared/common
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

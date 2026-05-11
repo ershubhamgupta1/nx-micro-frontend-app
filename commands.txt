@@ -1,0 +1,119 @@
+npx create-nx-workspace@latest nx-mfe-poc \
+  --workspaceType=integrated \
+  --preset=apps \
+  --nxCloud=skip \
+  --interactive=false
+
+
+
+  cd nx-mfe-poc
+
+npm install -D @nx/react @nx/webpack @nx/jest
+
+nx g @nx/react:host \
+  --name=shell \
+  --directory=apps/shell \
+  --bundler=webpack \
+  --style=css \
+  --unitTestRunner=jest \
+  --e2eTestRunner=none
+
+nx g @nx/react:remote \
+  --name=dispatch_messages \
+  --host=shell \
+  --directory=apps/dispatch_messages \
+  --bundler=webpack \
+  --style=css \
+  --unitTestRunner=jest \
+  --e2eTestRunner=none
+  
+nx reset 
+
+nx serve shell (this will automatically load both shell and dispatch_messages)
+
+
+================================
+
+1) Create build for shell and dispatch_messages:  nx build shell 
+  Desc: it will automatically build both shell and dispatch_messages
+
+2) How to validate the build 
+
+  npm install -g serve
+  cd dist/apps/shell
+  serve
+
+3) Now open the url given by serve in your browser and you should see the shell app with dispatch_messages loaded
+Note: see you can see the app.tsx in sources tab, you can see the files are not hashed, only one separate file for the vendors
+
+
+
+
+
+
+
+Things to show in demo
+
+FOR NX Based App (show the nx features how easliy we can create the setup)
+
+1) How we will create the setup App
+2) How to add remote app and host app.  
+3) How to run the app in local server
+4) How to build the app and run it 
+5) Leverage the Devtool to show the diff b/w dev and build 
+  1) app.tsx can be seen in sources tab for dev but not for build
+  2) in network tab we can see the files are getting hashed in build but not on dev
+
+
+
+
+
+Useful commands
+
+1) Create the build with dev config: nx build shell --configuration=development
+
+
+
+
+================================
+
+Publish shared-common package to GitHub Packages
+
+Package name: @ershubhamgupta1/shared-common
+
+1) Update the version in libs/shared/common/package.json
+
+2) Build the shared package
+
+  npx nx build shared-common
+
+3) Publish locally to GitHub Packages using PAT
+
+  export GH_PACKAGES_TOKEN=<your_github_pat_with_write_packages>
+  printf "@ershubhamgupta1:registry=https://npm.pkg.github.com\n//npm.pkg.github.com/:_authToken=${GH_PACKAGES_TOKEN}\n" > ~/.npmrc
+  cd dist/libs/shared/common
+  npm publish
+
+4) Push code changes to GitHub
+
+  git add .
+  git commit -m "chore: prepare shared-common package publish"
+  git push origin main
+
+5) Publish using GitHub Actions by pushing a tag
+
+  git tag shared-common-v0.1.0
+  git push origin shared-common-v0.1.0
+
+6) Or trigger the workflow manually from GitHub Actions
+
+  Workflow name: Publish Shared Common Package
+
+7) Install the package from GitHub Packages in another project
+
+  npm install @ershubhamgupta1/shared-common
+
+8) If installing from another private project, configure npm registry first
+
+  printf "@ershubhamgupta1:registry=https://npm.pkg.github.com\n//npm.pkg.github.com/:_authToken=${GH_PACKAGES_TOKEN}\n" > ~/.npmrc
+  npm install @ershubhamgupta1/shared-common

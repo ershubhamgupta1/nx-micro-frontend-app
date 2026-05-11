@@ -1,0 +1,34 @@
+{
+  "name": "@ershubhamgupta1/shared-common",
+  "version": "0.1.0",
+  "description": "Shared React components for the nx micro frontend workspace",
+  "license": "MIT",
+  "private": false,
+  "type": "module",
+  "main": "./index.js",
+  "types": "./index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./index.d.ts",
+      "default": "./index.js"
+    }
+  },
+  "files": [
+    "**/*.js",
+    "**/*.d.ts",
+    "**/*.css"
+  ],
+  "sideEffects": ["**/*.css"],
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ershubhamgupta1/nx-micro-frontend-app.git",
+    "directory": "libs/shared/common"
+  },
+  "peerDependencies": {
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  }
+}
