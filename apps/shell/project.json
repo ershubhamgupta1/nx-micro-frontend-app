@@ -4,6 +4,7 @@
   "sourceRoot": "apps/shell/src",
   "projectType": "application",
   "tags": [],
+  "implicitDependencies": ["dispatch_messages"],
   "targets": {
     "build": {
       "executor": "@nx/webpack:webpack",

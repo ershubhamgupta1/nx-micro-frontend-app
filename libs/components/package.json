@@ -1,0 +1,6 @@
+{
+  "name": "mx-shared-component",
+  "version": "0.1.4",
+  "private": true,
+  "description": "Shared React components for the nx micro frontend workspace"
+}

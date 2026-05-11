@@ -1,6 +1,6 @@
 // Uncomment this line to use CSS modules
 // import styles from './app.module.css';
-import { Button, PageCard } from '@ershubhamgupta/shared-component';
+import { Button, PageCard } from 'mx-shared-component';
 
 export function App() {
   return (
